@@ -1,4 +1,4 @@
-from word_embbeding_main import WordEmbedding as wv
+from .word_embedding import WordEmbedding as wv
 from sklearn.manifold import TSNE
 import numpy as np
 import pandas as pd
@@ -131,6 +131,49 @@ class ModelTsne:
             elif char == 'J':
                 return NGRAM_PROPERTIES[rand_dict[randint(5, 6)]]
 
+    def visualization(self, X_tsne, label,  filename):
+        """
+        Visualization of the 6 graphics from the
+        attributes calculated for tripeptides as protvec
+        :param X_tsne:
+        :param label:
+        :param filename:
+        :return:
+        """
+        # load final_embedding data
+        print('Visualization')
+        fig, axarr = plt.subplots(2, 3, figsize=(15, 10))
+        # set marker size
+        marker_size = 1
+
+        # set scatter
+        g1 = axarr[0, 0].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 0])
+        axarr[0, 0].set_title("Mass")
+        fig.colorbar(g1, ax=axarr[0, 0])
+
+        g2 = axarr[0, 1].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 1])
+        axarr[0, 1].set_title("Volume")
+        fig.colorbar(g2, ax=axarr[0, 1])
+
+        g3 = axarr[0, 2].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 2])
+        axarr[0, 2].set_title("Van der Waals Volume")
+        fig.colorbar(g3, ax=axarr[0, 2])
+
+        g4 = axarr[1, 0].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 3])
+        axarr[1, 0].set_title("Polarity")
+        fig.colorbar(g4, ax=axarr[1, 0])
+
+        g5 = axarr[1, 1].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 4])
+        axarr[1, 1].set_title("Hydrophobicity")
+        fig.colorbar(g5, ax=axarr[1, 1])
+
+        g6 = axarr[1, 2].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 5])
+        axarr[1, 2].set_title("Charge")
+        fig.colorbar(g6, ax=axarr[1, 2])
+
+
+        plt.savefig(filename)
+        plt.show()
 
 
     def tsne_plot_2D(self, tsne_model= None, model= None, labels= None , filename: str = 'embedding_2d.jpg'):
@@ -143,7 +186,7 @@ class ModelTsne:
         :return: 2D-plot of the TSNE model.
         """
 
-        if tsne_model == None:
+        if tsne_model is None:
             tsne_fit , labels = self.make_tsne(model)
         else:
             tsne_fit = self.load_tsne(tsne_model)
@@ -223,41 +266,7 @@ class ModelTsne:
         plt.savefig(filename)
         plt.show()
 
-    def visualization(self, X_tsne, label,  filename):
-        # load final_embedding data
-        print('Visualization')
-        fig, axarr = plt.subplots(2, 3, figsize=(15, 10))
-        # set marker size
-        marker_size = 1
 
-        # set scatter
-        g1 = axarr[0, 0].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 0])
-        axarr[0, 0].set_title("Mass")
-        fig.colorbar(g1, ax=axarr[0, 0])
-
-        g2 = axarr[0, 1].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 1])
-        axarr[0, 1].set_title("Volume")
-        fig.colorbar(g2, ax=axarr[0, 1])
-
-        g3 = axarr[0, 2].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 2])
-        axarr[0, 2].set_title("Van der Waals Volume")
-        fig.colorbar(g3, ax=axarr[0, 2])
-
-        g4 = axarr[1, 0].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 3])
-        axarr[1, 0].set_title("Polarity")
-        fig.colorbar(g4, ax=axarr[1, 0])
-
-        g5 = axarr[1, 1].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 4])
-        axarr[1, 1].set_title("Hydrophobicity")
-        fig.colorbar(g5, ax=axarr[1, 1])
-
-        g6 = axarr[1, 2].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, label[:, 5])
-        axarr[1, 2].set_title("Charge")
-        fig.colorbar(g6, ax=axarr[1, 2])
-
-
-        plt.savefig(filename)
-        plt.show()
     def visualization_2(self, X_tsne , y , filename):
         # load final_embedding data
         print('Visualization')
@@ -268,7 +277,7 @@ class ModelTsne:
         # set scatter
         g1 = axarr[0, 0].scatter(X_tsne[:, 0], X_tsne[:, 1], marker_size, y)
         axarr[0, 0].set_title("A")
-        fig.colorbar(g1, ax=axarr[0, 0])
+        fig.colorbar(g1)
 
         plt.savefig(filename)
         plt.show()
